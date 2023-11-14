@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous">
+        <title>BIHAR CHAT</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="app">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-md-3 mx-auto my-5">
+                        <div class="card" style="height: 590px;">
+                            <div class="text-center card-header">
+                                MES AMIS
+                            </div>
+                            <div class="list-group">
+                                <button type="button"
+                                    class="list-group-item list-group-item-action"
+                                    id="groupe"
+                                    value="groupe"
+                                    onclick="groupe()">
+                                    Mon groupe
+                                </button>
+                                <% user.forEach(user => { %>
+                                <button type="button"
+                                    class="list-group-item list-group-item-action"
+                                    id="<%= user.pseudo %>"
+                                    value="<%= user.pseudo %>"
+                                    onclick="envoyerID('<%= user.pseudo %>')">
+                                    <%= user.pseudo %>
+                                </button>
+                                <% }) %>
+                            </div>
+                            <div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mx-auto my-5">
+                        <div class="card" style="height: 590px;">
+                            <div class="text-center card-header">
+                                BIHAR CHAT
+                            </div>
+                            <div class="card-body msgContainer"
+                                id="msgContainer">
+
+                            </div>
+                            <div>
+                                <div id="isWritting"></div>
+                                <form action method="post" id="chatForm"
+                                    class="input-group mb-3 formulaire">
+                                    <input type="text" class="form-control"
+                                        placeholder="Ecrire un message"
+                                        aria-label="Recipient's username"
+                                        aria-describedby="btnSend" id="msgInput"
+                                        autofocus onkeypress="writting()"
+                                        onblur="notWritting()">
+                                    <button class="btn btn-primary"
+                                        type="submit" id="btnSend"
+                                        value="Envoyer">Envoyer</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 mx-auto my-5">
+                        <div class="card" style="height: 590px;">
+                            <div class="text-center card-header">
+                                NOTIFICATIONS
+                            </div>
+                            <div class="card-body"
+                                id="notification">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="chat.js"></script>
+
+    </body>
+</html>
