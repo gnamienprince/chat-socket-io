@@ -19,12 +19,17 @@ socket.on('quitUser', (pseudo) => {
 });
 
 var tableauObjets = [];
+var tableau2;
 
-//reception de tout les messages
+
+
 socket.on('OldMessages', (tableauObjet) => {
+    tableauObjets = tableauObjet.filter(item => item.receiver == 0);
+    tableau2 = tableauObjet;
+    //tout les messages
+    console.log(tableauObjets);
     tableauObjets = tableauObjet;
-    tableauObjet.forEach(objet => {
-       
+    tableauObjet.forEach(objet => { 
             if (objet.sender === pseudo) {
                 createElementFunction('oldMessageMe', objet);
             }
@@ -33,7 +38,23 @@ socket.on('OldMessages', (tableauObjet) => {
             };
         
     });
+
+    
 });
+
+//reception de tout les messages
+function envoyerGroupe() {
+    console.log('test');    
+    //a chaque fois le chaque utilisateur est selectionner, il faut masquer la conversation du groupe
+    const element1 = document.getElementById('msgContainer');
+
+    if (element1) {
+        while (element1.firstChild) {
+            element1.removeChild(element1.firstChild);
+        };
+    };
+    
+}
 
 
 
@@ -43,7 +64,18 @@ socket.on('newMessageAll', (content) => {
 });
 
 //message solitaire
-
+// function buttonGroupe(groupe){
+//     const tableauObjet = tableauObjets.filter(item => item.receiver == 0);
+//     //console.log(tableauObjets);
+//     tableauObjet.forEach(objet => {
+//             if (objet.sender === pseudo) {
+//                 createElementFunction('oldMessageMe', objet);
+//             }
+//             else {
+//                 createElementFunction('oldMessage', objet);
+//             };
+//     });
+// }
 
 var nomUser = 0;
 function envoyerID(user) {
@@ -66,9 +98,13 @@ function envoyerID(user) {
     //console.log(tableauObjets);
     //console.log(tableauObjets);
     //let premierMessage = tableauObjets.find(item => true);
-    let resultatsFiltres = tableauObjets.filter(objet =>
+    //console.log(tableau2);
+    tableau2 = Array.from(tableau2);
+    let resultatsFiltres = tableau2.filter(objet =>
         objet.sender === pseudo && objet.receiver === nomUser || objet.sender === nomUser && objet.receiver === pseudo
     );
+
+    console.log(resultatsFiltres);
 
     //console.log(resultatsFiltres);
     resultatsFiltres.forEach(objet => {
@@ -78,14 +114,15 @@ function envoyerID(user) {
         }
         if (objet.sender === nomUser) {
             //console.log(objet);
-            createElementFunction('recuMessagePerso', objet);
+            createElementFunction('recuMessagePerso', objet);     
         };
     });
 
+    //console.log(resultatsFiltres);
     //quand je clic je doit modifier l'id du bouton envoyé de sorte a filtrer les messages
-    // const idButton = document.getElementById('btnSend');
-    // idButton.id = nomUser;
-    // console.log(idButton.id);
+    //const idButton = document.getElementById('btnSend');
+    //idButton.id = nomUser;
+    //console.log(idButton.id);
 };
 
 

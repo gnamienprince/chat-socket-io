@@ -20,7 +20,6 @@ const db = mysql.createConnection({
 });
 
 
-
 // Établir la connexion à la base de données
 db.connect((err) => {
     if (err) {
@@ -91,6 +90,7 @@ io.on('connection', (socket) => {
 
     //requette pour recuperer tout les messages de la base de données
     const sql = 'SELECT * from message';
+
     db.query(sql, (err, results) => {
         if (err) {
             console.error('Erreur lors de la requête : ' + err.message);
@@ -98,11 +98,12 @@ io.on('connection', (socket) => {
         } else {
             // Traitez les données récupérées ici (dans l'objet 'results')
             tableauObjets = Array.from(results);
+            
             console.log(tableauObjets[1].receiver);
             // Traitez le tableau d'objets
             // tableauObjets.forEach((objet) => {
             //     console.log(objet.sender);
-            // });
+            // });  
 
             socket.emit('OldMessages', (tableauObjets));
         }
