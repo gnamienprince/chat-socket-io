@@ -89,7 +89,7 @@ io.on('connection', (socket) => {
     });
 
     //requette pour recuperer tout les messages de la base de données
-    const sql = 'SELECT * from message';
+    const sql = 'SELECT * from message ORDER BY idMessage ASC';
 
     db.query(sql, (err, results) => {
         if (err) {
@@ -99,13 +99,36 @@ io.on('connection', (socket) => {
             // Traitez les données récupérées ici (dans l'objet 'results')
             tableauObjets = Array.from(results);
             
-            console.log(tableauObjets[1].receiver);
+            //console.log(tableauObjets[1].receiver);
             // Traitez le tableau d'objets
             // tableauObjets.forEach((objet) => {
             //     console.log(objet.sender);
             // });  
 
             socket.emit('OldMessages', (tableauObjets));
+            
+        }
+    });
+
+    //requette pour recuperer tout les messages privés de la base de données
+    var valDif = '0';
+    const sql2 = 'SELECT * from message WHERE receiver <> ? ORDER BY idMessage ASC';
+
+    db.query(sql2,[valDif], (err, results) => {
+        if (err) {
+            console.error('Erreur lors de la requête : ' + err.message);
+            // Gérez l'erreur ici, par exemple, en renvoyant une réponse d'erreur au client.
+        } else {
+            // Traitez les données récupérées ici (dans l'objet 'results')
+            tableauObjets = Array.from(results);
+            
+            //console.log(tableauObjets[1].receiver);
+            // Traitez le tableau d'objets
+            // tableauObjets.forEach((objet) => {
+            //     console.log(objet.sender);
+            // });  
+
+            socket.emit('DifMessages', (tableauObjets));
         }
     });
 
@@ -114,7 +137,7 @@ io.on('connection', (socket) => {
         //insertion des messages envoyés dans la base de données
         //const message = message;
         
-        if (receiver != 0){
+        if(receiver != 0){
             const sql = "INSERT INTO message (sender,receiver,content) VALUES (?)";
             const contenu = [socket.pseudo, receiver, message];
             db.query(sql, [contenu]);

@@ -20,41 +20,56 @@ socket.on('quitUser', (pseudo) => {
 
 var tableauObjets = [];
 var tableau2;
-
-
-
-socket.on('OldMessages', (tableauObjet) => {
-    tableauObjets = tableauObjet.filter(item => item.receiver == 0);
-    tableau2 = tableauObjet;
-    //tout les messages
-    console.log(tableauObjets);
-    tableauObjets = tableauObjet;
-    tableauObjet.forEach(objet => { 
-            if (objet.sender === pseudo) {
-                createElementFunction('oldMessageMe', objet);
-            }
-            else {
-                createElementFunction('oldMessage', objet);
-            };
-        
-    });
-
-    
-});
+var nomUser = 0;
 
 //reception de tout les messages
 function envoyerGroupe() {
-    console.log('test');    
+    nomUser = 0;
+    const socket = io();
+    //console.log('test');
     //a chaque fois le chaque utilisateur est selectionner, il faut masquer la conversation du groupe
     const element1 = document.getElementById('msgContainer');
+
 
     if (element1) {
         while (element1.firstChild) {
             element1.removeChild(element1.firstChild);
         };
     };
+
     
-}
+    //tableauObjets = tableauObjet;
+    // console.log(tableauObjets);
+    // tableauObjets.forEach(objet => {
+    //     if (objet.sender === pseudo) {
+    //         createElementFunction('oldMessageMe', objet);
+    //     }
+    //     else {
+    //         createElementFunction('oldMessage', objet);
+    //     };
+
+    // });
+
+    socket.on('OldMessages', (tableauObjet) => {
+        tableauObjets = tableauObjet.filter(objet => objet.receiver == '0');
+        tableau2 = tableauObjet;
+        //tout les messages
+        console.log(tableauObjets);
+        tableauObjets.forEach(objet => {
+            if (objet.sender === pseudo) {
+                createElementFunction('oldMessageMe', objet);
+            }
+            else {
+                createElementFunction('oldMessage', objet);
+            };
+    
+        });
+
+        
+    
+    });
+
+};
 
 
 
@@ -77,8 +92,9 @@ socket.on('newMessageAll', (content) => {
 //     });
 // }
 
-var nomUser = 0;
+
 function envoyerID(user) {
+    const socket = io();
     //console.log(user);
     nomUser = document.getElementById(user).value;
     //a chaque fois le chaque utilisateur est selectionner, il faut masquer la conversation du groupe
@@ -100,22 +116,31 @@ function envoyerID(user) {
     //let premierMessage = tableauObjets.find(item => true);
     //console.log(tableau2);
     tableau2 = Array.from(tableau2);
-    let resultatsFiltres = tableau2.filter(objet =>
-        objet.sender === pseudo && objet.receiver === nomUser || objet.sender === nomUser && objet.receiver === pseudo
-    );
-
-    console.log(resultatsFiltres);
+    
 
     //console.log(resultatsFiltres);
-    resultatsFiltres.forEach(objet => {
-        if (objet.sender === pseudo) {
-            //console.log('test3');
-            createElementFunction('oldMessageMe', objet);
-        }
-        if (objet.sender === nomUser) {
-            //console.log(objet);
-            createElementFunction('recuMessagePerso', objet);     
-        };
+
+    //console.log(resultatsFiltres);
+    
+
+    socket.on('DifMessages', (resultatsFiltres) => {
+        resultatsFiltres = tableau2.filter(objet =>
+            objet.sender === pseudo && objet.receiver === nomUser || objet.sender === nomUser && objet.receiver === pseudo
+        );
+        //tout les messages filtrés
+        console.log(resultatsFiltres);
+        resultatsFiltres.forEach(objet => {
+            if (objet.sender === pseudo) {
+                //console.log('test3');f
+                createElementFunction('oldMessageMe2', objet);
+            }
+            if (objet.sender === nomUser) {
+                //console.log(objet);
+                createElementFunction('recuMessagePerso', objet);
+            };
+    
+        });
+    
     });
 
     //console.log(resultatsFiltres);
@@ -205,10 +230,15 @@ function createElementFunction(element, content) {
 
         case 'recuMessagePerso':
             newElement.classList.add('newMessageAll', 'message');
-            newElement.innerHTML = content.receiver + ' : ' + content.content;
+            newElement.innerHTML = nomUser + ' : ' + content.content;
             document.getElementById('msgContainer').appendChild(newElement);
             break;
 
+        case 'oldMessageMe2':
+            newElement.classList.add('newMessageMe', 'message');
+            newElement.innerHTML = pseudo + ' : ' + content.content;
+            document.getElementById('msgContainer').appendChild(newElement);
+            break;
 
         case 'oldMessageMe':
             newElement.classList.add('newMessageMe', 'message');
@@ -253,13 +283,13 @@ function groupe() {
         socket.on('OldMessages', function (tableauObjet) {
             tableauObjets = tableauObjet;
             tableauObjet.forEach(objet => {
-                
-                    if (objet.sender === pseudo) {
-                        createElementFunction('oldMessageMe', objet);
-                    } else {
-                        createElementFunction('oldMessage', objet);
-                    }
-                
+
+                if (objet.sender === pseudo) {
+                    createElementFunction('oldMessageMe', objet);
+                } else {
+                    createElementFunction('oldMessage', objet);
+                }
+
             });
         });
     };
