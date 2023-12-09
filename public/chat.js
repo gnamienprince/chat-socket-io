@@ -22,8 +22,15 @@ var tableauObjets = [];
 var tableau2;
 var nomUser = 0;
 
+//bouton groupe
+const boutonGroupe = document.getElementById('groupe');
+
+// Sélectionne tous les boutons avec la classe 'boutonPrivee'
+const boutons = document.querySelectorAll('.boutonPrivee');
+
 //reception de tout les messages
 function envoyerGroupe() {
+
     nomUser = 0;
     const socket = io();
     //console.log('test');
@@ -37,7 +44,18 @@ function envoyerGroupe() {
         };
     };
 
+    //mettre le bouton en bleu 
     
+    boutonGroupe.classList.add('active');
+    //boutons.classList.remove('active');
+
+    // Parcours chaque bouton des messages privés pour retirer le bleu lorsqu'on clique la dessus 
+    boutons.forEach((bouton) => {
+        // Si le bouton correspond à l'utilisateur actuel, ajoute la classe 'active'
+        bouton.classList.remove('active');
+    });
+
+
     //tableauObjets = tableauObjet;
     // console.log(tableauObjets);
     // tableauObjets.forEach(objet => {
@@ -94,11 +112,31 @@ socket.on('newMessageAll', (content) => {
 
 
 function envoyerID(user) {
+    //alert(user);
     const socket = io();
     //console.log(user);
     nomUser = document.getElementById(user).value;
     //a chaque fois le chaque utilisateur est selectionner, il faut masquer la conversation du groupe
     const element1 = document.getElementById('msgContainer');
+    
+    //activer et desactiver le boutton
+    //const boutonPerso = document.getElementById(user);
+    //boutonPerso.classList.add('active');
+
+    //desactiver la couleur du boutton
+    boutonGroupe.classList.remove('active');
+
+    // Parcours chaque bouton
+    boutons.forEach((bouton) => {
+        // Si le bouton correspond à l'utilisateur actuel, ajoute la classe 'active'
+        if (bouton.id === user) {
+            bouton.classList.add('active');
+        } else {
+            // Sinon, enlève la classe 'active'
+            bouton.classList.remove('active');
+        }
+    });
+
 
     if (element1) {
         while (element1.firstChild) {
@@ -197,14 +235,14 @@ function createElementFunction(element, content) {
 
         //afficher le message de connexion
         case 'newUser':
-            newElement.classList.add(element, 'message');
+            newElement.classList.add(element, 'messageN');
             newElement.textContent = content + ' est connecté';
             document.getElementById('notification').appendChild(newElement);
             break;
 
         //afficher le message de deconnexion
         case 'quitUser':
-            newElement.classList.add(element, 'message');
+            newElement.classList.add(element, 'messageN');
             newElement.textContent = content + " s'est déconnecté";
             document.getElementById('notification').appendChild(newElement);
             break;

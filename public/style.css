@@ -1,10 +1,27 @@
 /* General */
-.app{
+.app {
     font-weight: bold;
     background-color: black;
 }
 
-.msgContainer,.msgContainer2{
+.conteneur {
+    display: flex;
+    align-items: center;
+}
+
+.icone {
+    font-size: 24px; /* Taille de l'icône */
+    margin-right: 10px; /* Marge à droite de l'icône pour l'espace */
+}
+.msgContainer,
+.msgContainer2{
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    background-image: url('background.jpg');
+}
+
+.notification{
     overflow: auto;
     display: flex;
     flex-direction: column;
@@ -13,80 +30,95 @@
 
 
 /* user typing */
-#isWritting{
+#isWritting {
     color: red;
     font-style: italic;
 }
 
 /* form */
-.app > form {
+.app>form {
     position: absolute;
     bottom: 20px;
     width: 100%;
     margin-left: 20%;
 }
 
-form > input[type="text"]{
+form>input[type="text"] {
     display: inline-block;
     width: 50%;
     height: 35px;
     border: none;
 }
-form > input[type="submit"]{
+
+form>input[type="submit"] {
     padding: 9px;
     border: none;
 }
 
 /* User comes and quit */
-.newUser{
+.newUser {
     color: green;
     font-style: italic;
+
 }
-.quitUser{
+
+.quitUser {
     color: red;
     font-style: italic;
 }
 
 /* Messages */
-.message{
+.message {
     border: none;
     border-radius: 10px;
     font-size: 15px;
     padding: 10px;
     max-width: 45%;
 }
-.newMessageMe{
+
+.messageN {
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    padding: 10px;
+}
+
+.newMessageMe {
     background-color: rgb(77, 155, 243);
     color: #ffffff;
     margin-left: 60%;
     margin-top: 2%;
 }
-.newMessageAll{
+
+.newMessageAll {
     background-color: rgb(255, 0, 191);
     color: #ffffff;
     margin-top: 2%;
 }
-.whisper{
+
+.whisper {
     background-color: rgb(235, 14, 14);
     margin-top: 2%;
 }
 
 /* Messages from databse */
-.oldMessages{
+.oldMessages {
     background-color: rgb(204, 211, 211);
     margin-top: 2%;
 }
-.oldWhispers{
+
+.oldWhispers {
     background-color: rgb(235, 14, 14);
     margin-top: 2%;
 }
 
 
 /* Channels */
-.channelList{
-    color:white;
+.channelList {
+    color: white;
     width: 25%;
 }
+
 .elementList {
     width: 60%;
     background-color: rgb(131, 131, 131);
@@ -94,12 +126,14 @@ form > input[type="submit"]{
     transition: 0.5s;
     cursor: pointer;
 }
+
 .elementList:hover {
-    
+
     background-color: rgb(105, 105, 105);
     transition: 0.5s;
     cursor: pointer;
 }
+
 .inChannel {
     background-color: rgb(105, 105, 105);
     transition: 0.5s;
